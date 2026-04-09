@@ -15,27 +15,27 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t notes-app:v1 .'
+                bat 'docker build -t notes-app:v1 .'
             }
         }
 
         stage('Login to DockerHub') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'dockerhub-cred', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
-                    sh 'echo $PASS | docker login -u $USER --password-stdin'
+                    bat 'echo %PASS% | docker login -u %USER% --password-stdin'
                 }
             }
         }
 
         stage('Tag Image') {
             steps {
-                sh 'docker tag notes-app:v1 $DOCKER_IMAGE:v1'
+                bat 'docker tag notes-app:v1 %DOCKER_IMAGE%:v1'
             }
         }
 
         stage('Push Image') {
             steps {
-                sh 'docker push $DOCKER_IMAGE:v1'
+                bat 'docker push %DOCKER_IMAGE%:v1'
             }
         }
     }
