@@ -41,7 +41,7 @@ def edit(id):
 def delete(id):
     global notes
     notes = [n for n in notes if n['id'] != id]
-    return redirect(url_for('index'))
+    return redirect('/')
 
 # ---------------- Run App ----------------
 if __name__ == '__main__':

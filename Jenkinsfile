@@ -9,13 +9,13 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                git branch: 'v2', url: 'https://github.com/Thrisha138/notes-app.git'
+                git branch: 'v3', url: 'https://github.com/Thrisha138/notes-app.git'
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                bat 'docker build -t notes-app:v2 .'
+                bat 'docker build -t notes-app:v3 .'
             }
         }
 
@@ -29,13 +29,13 @@ pipeline {
 
         stage('Tag Image') {
             steps {
-                bat 'docker tag notes-app:v2 %DOCKER_IMAGE%:v2'
+                bat 'docker tag notes-app:v3 %DOCKER_IMAGE%:v3'
             }
         }
 
         stage('Push Image') {
             steps {
-                bat 'docker push %DOCKER_IMAGE%:v2'
+                bat 'docker push %DOCKER_IMAGE%:v3'
             }
         }
     }
