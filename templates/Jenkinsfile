@@ -9,34 +9,35 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                git branch: 'v2', url: 'https://github.com/Thrisha138/notes-app.git'
+                git branch: 'v1', url: 'https://github.com/Thrisha138/notes-app.git'
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                bat 'docker build -t notes-app:v2 .'
+                sh 'docker build -t notes-app:v1 .'
             }
         }
 
         stage('Login to DockerHub') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'dockerhub-cred', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
-                    bat 'docker login -u %USER% -p %PASS%'
+                    sh 'echo $PASS | docker login -u $USER --password-stdin'
                 }
             }
         }
 
         stage('Tag Image') {
             steps {
-                bat 'docker tag notes-app:v2 %DOCKER_IMAGE%:v2'
+                sh 'docker tag notes-app:v1 $DOCKER_IMAGE:v1'
             }
         }
 
         stage('Push Image') {
             steps {
-                bat 'docker push %DOCKER_IMAGE%:v2'
+                sh 'docker push $DOCKER_IMAGE:v1'
             }
         }
     }
 }
+
